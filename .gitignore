@@ -1,0 +1,10 @@
+# vim temp files
+*.swp
+# obj files
+*.o
+# gcc dependency files
+*.d
+# image/iso files
+image.bin
+image.iso
+isodir/*
