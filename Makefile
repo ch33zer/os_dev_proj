@@ -8,9 +8,11 @@ TSTFILES := $(patsubst %.cc,%_t,$(SRCFILES))
 DEPFILES    := $(patsubst %.cc,%.d,$(SRCFILES))
 TSTDEPFILES := $(patsubst %,%.d,$(TSTFILES))
 ALLFILES := $(SRCFILES) $(HDRFILES) $(AUXFILES)
-CC := i686-elf-gcc
-CXX := i686-elf-g++
-AS := i686-elf-as
+TARGET := i686-elf
+CC := $(TARGET)-gcc
+CXX := $(TARGET)-g++
+AS := $(TARGET)-as
+QEMU := qemu-system-i386
 
 WARNINGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization \
   -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept \
@@ -19,7 +21,7 @@ WARNINGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy
 
 CXXFLAGS := -std=c++11 -ffreestanding -O2 -fno-exceptions $(WARNINGS)
 
-.PHONY: all clean
+.PHONY: all clean run
 
 all: image.iso
 
@@ -27,7 +29,7 @@ clean:
 	$(RM) -r -f $(wildcard $(OBJFILES) $(DEPFILES) image.bin isodir image.iso)
 
 run: image.iso
-	qemu-system-i386 -cdrom image.iso
+	$(QEMU) -vnc :1 -cdrom image.iso
 
 image.iso: image.bin build/grub.cfg
 	mkdir -p isodir/boot/grub
