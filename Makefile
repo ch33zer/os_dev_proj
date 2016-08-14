@@ -24,7 +24,7 @@ CXXFLAGS := -std=c++11 -ffreestanding -O2 -fno-exceptions $(WARNINGS)
 all: image.iso
 
 clean:
-	$(RM) $(wildcard $(OBJFILES) $(DEPFILES) image.bin isodir image.iso)
+	$(RM) -r -f $(wildcard $(OBJFILES) $(DEPFILES) image.bin isodir image.iso)
 
 run: image.iso
 	qemu-system-i386 -cdrom image.iso
